@@ -9,7 +9,7 @@
 //require express in our app
 var express = require('express'),
   bodyParser = require('body-parser');
-
+var db = require('./models')
 // generate a new express app and call it 'app'
 var app = express();
 
@@ -49,18 +49,9 @@ var books = [
   }
 ];
 
-
-
-
-
-
-
 ////////////////////
 //  ROUTES
 ///////////////////
-
-
-
 
 // define a root route: localhost:3000/
 app.get('/', function (req, res) {
@@ -70,8 +61,10 @@ app.get('/', function (req, res) {
 // get all books
 app.get('/api/books', function (req, res) {
   // send all books as JSON response
-  console.log('books index');
-  res.json(books);
+  db.Book.find(function(err, books){
+    if (err) { return console.log("index error: " + err); }
+    res.json(books);
+  });
 });
 
 // get one book
